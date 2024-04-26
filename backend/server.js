@@ -31,7 +31,9 @@ app.get("/meals", (req, res) => {
     // Get the date query parameter from the request URL
     const { meal_date } = req.query;
     // Construct the SQL query to select meals for the specified date
+
     const sql = "SELECT * FROM meals WHERE DATE(meal_date) = ?";
+
     // Execute the SQL query with the specified date parameter
     db.query(sql, [meal_date], (err, data) => {
       if (err) {
@@ -42,6 +44,30 @@ app.get("/meals", (req, res) => {
       }
     });
   });
+
+  app.get("/totalcalories", (req, res) => {
+    // Get the date query parameter from the request URL
+    const { meal_date } = req.query;
+  
+    // Construct the SQL query to select meals and calculate total calories for the specified date
+    const sql = `
+      SELECT SUM(calories) AS total_calories
+      FROM meals
+      WHERE DATE(meal_date) = ?
+    `;
+
+    
+    // Execute the SQL query with the specified date parameter
+    db.query(sql, [meal_date], (err, data) => {
+      if (err) {
+        console.error('Error:', err);
+        res.status(500).send('Failed to retrieve meals');
+      } else {
+        res.json(data);
+      }
+    });
+  });
+  
   
 
 app.post('/eaten', (req, res) => {
