@@ -1,0 +1,8 @@
+:root {
+    --test: 100px;
+}
+
+body {
+    background-color: #00162B;
+    color: white;
+}

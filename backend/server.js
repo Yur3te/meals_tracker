@@ -73,7 +73,7 @@ app.get("/meals", (req, res) => {
 app.post('/eaten', (req, res) => {
     const { meal_name, calories, meal_date } = req.body;
     const sql = 'INSERT INTO meals (meal_name, calories, meal_date) VALUES (?, ?, ?)';
-    db.query(sql, [meal_name, calories, meal_date], (err, result) => {
+    db.query(sql, [meal_name, calories, meal_date], (err, response) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to add meal');

@@ -1,0 +1,52 @@
+input[type="text"] {
+    width: 300px;
+    background: #D9D9D9;
+    border-radius: 100px;
+    border: 1px solid ;
+    padding: 0.5em 1em;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #9C9C9C;
+    outline: none; /* może jakieś fajne wymyślę potem */
+    
+}
+
+/* idk, ctl c ctrl v */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+    width: 50px;
+    background: #D9D9D9;
+    border-radius: 100px;
+    border: 1px solid ;
+    padding: 0.5em 1em;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #9C9C9C;
+    outline: none; /* może jakieś fajne wymyślę potem */
+    text-align: center;
+}
+
+input[type="date"] {
+    width: 150px;
+    background: #D9D9D9;
+    border-radius: 100px;
+    border: 1px solid ;
+    padding: 0.5em 1em;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #000000;
+    outline: none; /* może jakieś fajne wymyślę potem */
+    text-align: center;
+}
+

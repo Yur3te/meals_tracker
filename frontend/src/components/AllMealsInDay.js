@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
 
 function AllMealsInDay() {
   const [data, setData] = useState([]);
@@ -8,8 +8,6 @@ function AllMealsInDay() {
   const [totalCalories, setTotalCalories] = useState([]);
 
   useEffect(() => {
-    // console.log(selectedDate)
-    // fetch('http://localhost:8081/meals')
     fetch(`http://localhost:8081/meals?meal_date=${selectedDate}`)
       .then((response) => response.json())
       .then((data) => {

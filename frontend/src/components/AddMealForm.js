@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import "./../style/AddMealForm.css"
+
 function AddMealForm({ onAddMeal }) {
   const [meal_name, setMealName] = useState('');
   const [calories, setCalories] = useState('');
@@ -24,13 +26,14 @@ function AddMealForm({ onAddMeal }) {
         value={meal_name}
         onChange={(e) => setMealName(e.target.value)}
         placeholder="Meal name"
+        // className="text-input"
         required
       />
       <input
         type="number"
         value={calories}
         onChange={(e) => setCalories(e.target.value)}
-        placeholder="Calories"
+        placeholder="kcal"
         required
       />
 
