@@ -1,8 +1,19 @@
 :root {
-    --test: 100px;
+  --test: 100px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: #00162B;
-    color: white;
+  background-color: #00162b;
+  color: white;
+}
+
+.add-meal {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
 }
