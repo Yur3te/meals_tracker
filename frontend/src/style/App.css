@@ -17,3 +17,15 @@ body {
     justify-content: center;
     margin-top: 50px;
 }
+
+.graph { 
+  width: 70%;
+  margin: auto 
+}
+
+.info {
+  /* width: 70%; */
+  margin-top: 100px;
+  /* margin: auto; */
+  text-align: center;
+}
