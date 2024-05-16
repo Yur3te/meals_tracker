@@ -12,7 +12,6 @@ const db = mysql.createConnection({
     user: "root",
     password: "",
     database: "mealsdata"
-
 })
 
 app.get('/', (req, res) => {
@@ -67,6 +66,27 @@ app.get("/meals", (req, res) => {
       }
     });
   });
+
+  app.get("/total-calories-by-period", (req, res) => {
+    const { startDate, endDate } = req.query;
+  
+    const sql = `
+      SELECT DATE(meal_date) AS day, SUM(calories) AS total_calories
+      FROM meals
+      WHERE DATE(meal_date) BETWEEN ? AND ?
+      GROUP BY DATE(meal_date);
+    `;
+  
+    db.query(sql, [startDate, endDate], (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+        res.status(500).send('Failed to retrieve total calories by period');
+      } else {
+        res.json(result);
+      }
+    });
+  });
+  
   
   
 
