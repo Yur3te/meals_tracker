@@ -13,26 +13,30 @@ function Navbar() {
 
   const showSidebar = () => setSidebar(!sidebar);
 
+  // const hideSidebar = () => setSidebar(false)
+
   return (
     <div>
       <IconContext.Provider value={{ color: "white" }}>
-        <div className="navbar">
-          <h1 className="navbar-title">MealsTracker</h1>
+        <div className="navbar" >
+          {/* <Link to="/" className="navbar-title" onClick={hideSidebar}> */}
+            <h1 className="navbar-title">MealsTracker</h1>
+          {/* </Link> */}
           <Link to="#" className="menu-bars">
             <FaBars onClick={showSidebar} />
           </Link>
         </div>
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
-          <ul className="nav-menu-items" onClick={showSidebar}>
+          <ul className="nav-menu-items">
             <li className="navbar-toggle">
               <Link to="#" classname="menu-bars">
-                <IoMdClose />
+                <IoMdClose onClick={showSidebar}/>
               </Link>
             </li>
             {SidebarData.map((item, index) => {
               return (
                 <li key={index} className={item.cName}>
-                  <Link to={item.path}>
+                  <Link onClick={showSidebar} to={item.path}>
                     {item.icon}
                     <span>{item.title}</span>
                   </Link>
