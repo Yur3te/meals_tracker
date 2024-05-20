@@ -44,13 +44,13 @@ app.get("/meals", (req, res) => {
     });
   });
 
-  app.get("/totalcalories", (req, res) => {
+  app.get("/total", (req, res) => {
     // Get the date query parameter from the request URL
     const { meal_date } = req.query;
   
     // Construct the SQL query to select meals and calculate total calories for the specified date
     const sql = `
-      SELECT SUM(calories) AS total_calories
+      SELECT SUM(calories) AS total_calories, SUM(proteins) AS total_proteins
       FROM meals
       WHERE DATE(meal_date) = ?
     `;
@@ -91,9 +91,9 @@ app.get("/meals", (req, res) => {
   
 
 app.post('/eaten', (req, res) => {
-    const { meal_name, calories, meal_date } = req.body;
-    const sql = 'INSERT INTO meals (meal_name, calories, meal_date) VALUES (?, ?, ?)';
-    db.query(sql, [meal_name, calories, meal_date], (err, response) => {
+    const { meal_name, calories, meal_date, proteins } = req.body;
+    const sql = 'INSERT INTO meals (meal_name, calories, meal_date, proteins) VALUES (?, ?, ?, ?)';
+    db.query(sql, [meal_name, calories, meal_date, proteins], (err, response) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to add meal');

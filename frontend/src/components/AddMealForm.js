@@ -5,6 +5,7 @@ import "./../style/AddMealForm.css"
 function AddMealForm({ onAddMeal }) {
   const [meal_name, setMealName] = useState('');
   const [calories, setCalories] = useState('');
+  const [proteins, setProteins] = useState('');
 
   const [meal_date, setMeal_date] = useState(new Date().toISOString().split('T')[0]); // Default to today
 
@@ -14,9 +15,10 @@ function AddMealForm({ onAddMeal }) {
 
     // const meal_date = new Date().toISOString().split('T')[0];
 
-    onAddMeal({ meal_name, calories, meal_date});
+    onAddMeal({ meal_name, calories, meal_date, proteins});
     setMealName('');
     setCalories('');
+    setProteins('');
   };
 
   return (
@@ -26,9 +28,17 @@ function AddMealForm({ onAddMeal }) {
         value={meal_name}
         onChange={(e) => setMealName(e.target.value)}
         placeholder="Meal name"
-        // className="text-input"
         required
       />
+
+
+      <input
+        type="number"
+        value={proteins}
+        onChange={(e) => setProteins(e.target.value)}
+        placeholder="proteins"
+      />
+
       <input
         type="number"
         value={calories}
@@ -36,7 +46,6 @@ function AddMealForm({ onAddMeal }) {
         placeholder="kcal"
         required
       />
-
 
         <input
         type="date"
@@ -46,7 +55,7 @@ function AddMealForm({ onAddMeal }) {
       />
 
 
-      <button type="submit">Add Meal</button>
+      <button type="submit">Add Meal!</button>
     </form>
   );
 }

@@ -6,6 +6,7 @@ function AllMealsInDay() {
     new Date().toISOString().split("T")[0]
   ); // Default to today
   const [totalCalories, setTotalCalories] = useState([]);
+  const [totalProteins, setTotalProteins] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:8081/meals?meal_date=${selectedDate}`)
@@ -16,10 +17,11 @@ function AllMealsInDay() {
       })
       .catch((err) => console.log(err));
 
-    fetch(`http://localhost:8081/totalcalories?meal_date=${selectedDate}`)
+    fetch(`http://localhost:8081/total?meal_date=${selectedDate}`)
       .then((response) => response.json())
       .then((data) => {
         setTotalCalories(data[0].total_calories);
+        setTotalProteins(data[0].total_proteins);
         console.log(data);
       })
       .catch((err) => console.log(err));
@@ -36,12 +38,14 @@ function AllMealsInDay() {
         <thead>
           <th>Name</th>
           <th>Calories</th>
+          <th>Proteins</th>
         </thead>
         <tbody>
           {data.map((item, index) => (
             <tr key={index}>
               <td>{item.meal_name}</td>
               <td>{item.calories}</td>
+              <td>{item.proteins}</td>
             </tr>
           ))}
         </tbody>
@@ -49,7 +53,7 @@ function AllMealsInDay() {
 
       <p></p>
       <h3>
-        Today, You have already eaten : <b>{totalCalories} </b> kcal
+        Today, You have already eaten <b>{totalCalories}</b> kcal and <b>{totalProteins}</b>g of proteins
       </h3>
     </div>
   );
