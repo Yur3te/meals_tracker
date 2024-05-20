@@ -1,5 +1,5 @@
 input[type="text"] {
-  width: 300px;
+  width: 500px;
   background: #d9d9d9;
   border-radius: 100px;
   border: 1px solid;
@@ -20,7 +20,7 @@ input::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
-  width: 50px;
+  width: 120px;
   background: #d9d9d9;
   border-radius: 100px;
   border: 1px solid;
@@ -35,7 +35,6 @@ input[type="number"] {
 }
 
 input[type="date"] {
-  width: 150px;
   background: #d9d9d9;
   border-radius: 100px;
   border: 1px solid;
@@ -50,7 +49,7 @@ input[type="date"] {
 }
 
 button {
-    width: 110px;
+  padding: 10px;
   background: #1eff00;
   border-radius: 100px;
   border: none;

@@ -1,8 +1,5 @@
 import React from "react";
 
-import { FaBars } from "react-icons/fa6";
-import { IoMdClose } from "react-icons/io";
-
 import { FaChartSimple } from "react-icons/fa6";
 import { FaHome, FaInfoCircle, FaUser } from "react-icons/fa";
 
