@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import "./../style/AllMealsInDay.css";
 function AllMealsInDay() {
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
@@ -8,6 +9,22 @@ function AllMealsInDay() {
   const [totalCalories, setTotalCalories] = useState([]);
   const [totalProteins, setTotalProteins] = useState([]);
 
+  // const [editedMealId, setEditedMealId] = useState();
+
+  const deleteMeal = (id) => {
+    fetch(`http://localhost:8081/meals/${id}`, {
+      method: "DELETE",
+    })
+    .then((response) => {
+      if (response.ok) {
+        setData((prevData) => prevData.filter(meal => meal.meal_id !== id));
+      } else {
+        console.error('Failed to delete meal');
+      }
+    })
+    .catch((err) => console.log(err));
+  }
+  
   useEffect(() => {
     fetch(`http://localhost:8081/meals?meal_date=${selectedDate}`)
       .then((response) => response.json())
@@ -46,6 +63,9 @@ function AllMealsInDay() {
               <td>{item.meal_name}</td>
               <td>{item.calories}</td>
               <td>{item.proteins}</td>
+              <button className="delete-button" type={"button"} onClick={() => deleteMeal(item.meal_id)}>
+                X
+              </button>
             </tr>
           ))}
         </tbody>

@@ -44,6 +44,21 @@ app.get("/meals", (req, res) => {
     });
   });
 
+  app.delete('/meals/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = 'DELETE FROM meals WHERE meal_id = ?';
+  
+    db.query(sql, [id], (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+        res.status(500).send('Failed to delete meal');
+      } else {
+        res.status(200).send({ message: 'Meal deleted successfully' });
+      }
+    });
+  });
+  
+
   app.get("/total", (req, res) => {
     // Get the date query parameter from the request URL
     const { meal_date } = req.query;
