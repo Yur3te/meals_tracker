@@ -105,20 +105,29 @@ app.get("/meals", (req, res) => {
   
   
 
-app.post('/eaten', (req, res) => {
+  app.post('/eaten', (req, res) => {
     const { meal_name, calories, meal_date, proteins } = req.body;
-    const sql = 'INSERT INTO meals (meal_name, calories, meal_date, proteins) VALUES (?, ?, ?, ?)';
-    db.query(sql, [meal_name, calories, meal_date, proteins], (err, response) => {
+    const insertSql = 'INSERT INTO meals (meal_name, calories, meal_date, proteins) VALUES (?, ?, ?, ?)';
+    db.query(insertSql, [meal_name, calories, meal_date, proteins], (err, result) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to add meal');
       } else {
-        console.log('Meal added successfully');
-        console.log(req.body)
-        res.status(200).send('Meal added successfully');
+        const newMealId = result.insertId;
+        const selectSql = 'SELECT * FROM meals WHERE meal_id = ?';
+        db.query(selectSql, [newMealId], (err, rows) => {
+          if (err) {
+            console.error('Error:', err);
+            res.status(500).send('Failed to retrieve new meal');
+          } else {
+            const newMeal = rows[0];
+            res.status(200).json(newMeal);
+          }
+        });
       }
     });
   });
+  
   
 
 app.listen(8081, ()=> {

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import "./../style/AllMealsInDay.css";
+
+import "./../style/App.css";
+
+import AddMealForm from "./../components/AddMealForm";
+
 function AllMealsInDay() {
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
@@ -15,16 +20,23 @@ function AllMealsInDay() {
     fetch(`http://localhost:8081/meals/${id}`, {
       method: "DELETE",
     })
-    .then((response) => {
-      if (response.ok) {
-        setData((prevData) => prevData.filter(meal => meal.meal_id !== id));
-      } else {
-        console.error('Failed to delete meal');
-      }
-    })
-    .catch((err) => console.log(err));
-  }
-  
+      .then((response) => {
+        if (response.ok) {
+          setData((prevData) => prevData.filter((meal) => meal.meal_id !== id));
+        } else {
+          console.error("Failed to delete meal");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const addMeal = (newMeal) => {
+    setData((prevData) => [...prevData, newMeal]);
+    setTotalCalories((prevTotal) => prevTotal + newMeal.calories);
+    setTotalProteins((prevTotal) => prevTotal + newMeal.proteins);
+  };
+
+
   useEffect(() => {
     fetch(`http://localhost:8081/meals?meal_date=${selectedDate}`)
       .then((response) => response.json())
@@ -42,10 +54,14 @@ function AllMealsInDay() {
         console.log(data);
       })
       .catch((err) => console.log(err));
-  }, [selectedDate]);
+  }, [selectedDate, data]);
 
   return (
     <div>
+      <div className="add-meal">
+        <AddMealForm onAddMeal={addMeal} />
+      </div>
+      <div className="meals-list">
       <input
         type="date"
         value={selectedDate}
@@ -63,17 +79,23 @@ function AllMealsInDay() {
               <td>{item.meal_name}</td>
               <td>{item.calories}</td>
               <td>{item.proteins}</td>
-              <button className="delete-button" type={"button"} onClick={() => deleteMeal(item.meal_id)}>
+              <button
+                className="delete-button"
+                type={"button"}
+                onClick={() => deleteMeal(item.meal_id)}
+              >
                 X
               </button>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
 
       <p></p>
       <h3>
-        Today, You have already eaten <b>{totalCalories}</b> kcal and <b>{totalProteins}</b>g of proteins
+        Today, You have already eaten <b>{totalCalories}</b> kcal and{" "}
+        <b>{totalProteins}</b>g of proteins
       </h3>
     </div>
   );
