@@ -57,6 +57,32 @@ app.get("/meals", (req, res) => {
       }
     });
   });
+
+  app.put('/meals/:id', (req, res) => {
+    const { id } = req.params;
+    const { meal_name, calories, proteins } = req.body;
+
+    const sql = 'UPDATE meals SET meal_name = ?, calories = ?, proteins = ? WHERE meal_id = ?';
+    db.query(sql, [meal_name, calories, proteins, id], (err, result) => {
+      if (err) {
+        console.error('Error:', err);
+        res.status(500).send('Failed to update meal');
+      } else {
+        // res.status(200).send('Meal updated successfully');
+        const selectSql = 'SELECT * FROM meals WHERE meal_id = ?';
+        db.query(selectSql, [id], (err, rows) => {
+          if (err) {
+            console.error('Error:', err);
+            res.status(500).send('Failed to retrieve new meal');
+          } else {
+            const updatedMeal = rows[0];
+            res.status(200).json(updatedMeal);
+          }
+        });
+      }
+    });
+  });
+  
   
 
   app.get("/total", (req, res) => {
@@ -113,6 +139,8 @@ app.get("/meals", (req, res) => {
         console.error('Error:', err);
         res.status(500).send('Failed to add meal');
       } else {
+        console.log('New meal added successfully');
+        console.log(req.body);
         const newMealId = result.insertId;
         const selectSql = 'SELECT * FROM meals WHERE meal_id = ?';
         db.query(selectSql, [newMealId], (err, rows) => {
