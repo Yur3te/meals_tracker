@@ -5,18 +5,20 @@ function EditMeal({ meal, onSubmit, onCancel }) {
   const [mealName, setMealName] = useState("");
   const [calories, setCalories] = useState("");
   const [proteins, setProteins] = useState("");
+  const [grams, setGrams] = useState("");
 
   useEffect(() => {
     if (meal) {
       setMealName(meal.meal_name);
       setCalories(meal.calories);
       setProteins(meal.proteins);
+      setGrams(meal.grams);
     }
   }, [meal]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ ...meal, meal_name: mealName, calories });
+    onSubmit({ ...meal, meal_name: mealName, calories, proteins, grams });
   };
 
   return (
@@ -27,6 +29,12 @@ function EditMeal({ meal, onSubmit, onCancel }) {
           value={mealName}
           onChange={(e) => setMealName(e.target.value)}
           placeholder="Meal Name"
+        />
+        <input
+          type="number"
+          value={grams}
+          onChange={(e) => setGrams(e.target.value)}
+          placeholder="grams"
         />
         <input
           type="number"

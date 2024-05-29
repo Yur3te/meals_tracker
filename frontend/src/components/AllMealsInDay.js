@@ -131,6 +131,7 @@ function AllMealsInDay() {
         <table>
           <thead>
             <th>Name</th>
+            <th>Grams</th>
             <th>Calories</th>
             <th>Proteins</th>
           </thead>
@@ -148,6 +149,7 @@ function AllMealsInDay() {
                 ) : (
                   <>
                     <td>{item.meal_name}</td>
+                    <td>{item.grams}</td>
                     <td>{item.calories}</td>
                     <td>{item.proteins}</td>
                     <td>

@@ -27,7 +27,7 @@ function AddMealForm({ onAddMeal }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ meal_name, calories, meal_date, proteins }),
+      body: JSON.stringify({ meal_name, calories, meal_date, proteins, grams }),
     })
       .then((response) => {
         if (response.ok) {
@@ -44,6 +44,7 @@ function AddMealForm({ onAddMeal }) {
         setMealName("");
         setCalories("");
         setProteins("");
+        setGrams("");
       });
 
     // const meal_date = new Date().toISOString().split('T')[0];
