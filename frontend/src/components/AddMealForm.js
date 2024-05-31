@@ -4,9 +4,8 @@ import "./../style/AddMealForm.css";
 
 const api_key = process.env.REACT_APP_API_KEY;
 
-const app_id = process.env.REACT_APP_APP_ID
+const app_id = process.env.REACT_APP_APP_ID;
 function AddMealForm({ onAddMeal }) {
-
   const [meal_name, setMealName] = useState("");
   const [calories, setCalories] = useState("");
   const [proteins, setProteins] = useState("");
@@ -15,10 +14,6 @@ function AddMealForm({ onAddMeal }) {
   const [meal_date, setMeal_date] = useState(
     new Date().toISOString().split("T")[0]
   ); // Default to today
-
-
- 
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,15 +63,16 @@ function AddMealForm({ onAddMeal }) {
       if (data.foods && data.foods.length > 0) {
         const food = data.foods[0];
         console.log(data);
-        const per100gCalories = (food.nf_calories / food.serving_weight_grams) * 100;
-        const per100gProteins = (food.nf_protein / food.serving_weight_grams) * 100;
+        const per100gCalories =
+          (food.nf_calories / food.serving_weight_grams) * 100;
+        const per100gProteins =
+          (food.nf_protein / food.serving_weight_grams) * 100;
         // console.log(per100gCalories);
         // console.log(per100gProteins);
         setCalories(Math.round((per100gCalories * grams) / 100));
         setProteins(Math.round((per100gProteins * grams) / 100));
         console.log(calories);
         console.log(proteins);
-
       } else {
         console.log("No food data found for", mealName);
       }
@@ -91,14 +87,14 @@ function AddMealForm({ onAddMeal }) {
   //   }
   // }, [meal_name, grams]);
 
-
-
-
   return (
-    <div className="meal-form">
-      
-      <form onSubmit={handleSubmit}>
+    <div className="flex flex-col">
+      <form
+        className="flex justify-center items-center"
+        onSubmit={handleSubmit}
+      >
         <input
+          className="w-1/2 bg-slate-200 rounded-full py-2 px-4 m-2 text-black outline-none font-medium"
           type="text"
           value={meal_name}
           onChange={(e) => {
@@ -110,6 +106,7 @@ function AddMealForm({ onAddMeal }) {
         />
 
         <input
+          className="w-24 bg-slate-200 rounded-full py-2 px-4 m-2 text-black outline-none font-medium text-center"
           type="number"
           value={grams}
           onChange={(e) => {
@@ -120,16 +117,17 @@ function AddMealForm({ onAddMeal }) {
           required
         />
 
-
         <input
+          className="w-24 bg-slate-200 rounded-full py-2 px-4 m-2 text-black outline-none font-medium text-center"
           type="number"
           value={calories}
           onChange={(e) => setCalories(e.target.value)}
           placeholder="kcal"
           // required
         />
-        
+
         <input
+          className="w-24 bg-slate-200 rounded-full py-2 px-4 m-2 text-black outline-none font-medium text-center"
           type="number"
           value={proteins}
           onChange={(e) => setProteins(e.target.value)}
@@ -137,15 +135,26 @@ function AddMealForm({ onAddMeal }) {
         />
 
         <input
+          className="bg-slate-200 rounded-full py-2 px-4 m-2 text-black outline-none font-medium text-center"
           type="date"
           value={meal_date}
           onChange={(e) => setMeal_date(e.target.value)}
           required
         />
 
-        <button type="submit">Add Meal!</button>
+        <button
+          className="w-32 bg-green-500 rounded-full px-4 py-2 hover:bg-green-600 hover:cursor-pointer"
+          type="submit"
+        >
+          Add Meal!
+        </button>
       </form>
-      <button onClick={() => fetchFoodData(meal_name, grams)}>Get food data!</button>
+      <button
+        className="w-36 bg-green-500 rounded-full px-2 py-2 mx-2 hover:bg-green-600 hover:cursor-pointer"
+        onClick={() => fetchFoodData(meal_name, grams)}
+      >
+        Get food data!
+      </button>
     </div>
   );
 }

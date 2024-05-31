@@ -52,6 +52,11 @@ function CalorieGraph({ startDate, endDate }) {
         }]
       },
       options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
         scales: {
           y: {
             beginAtZero: true
@@ -69,8 +74,8 @@ function CalorieGraph({ startDate, endDate }) {
   }, [calorieData]);
 
   return (
-    <div>
-      <h2>Calorie Graph</h2>
+    <div className='w-3/4 mt-2'>
+      <h2 className='text-center text-xl'>Calorie Graph</h2>
       <canvas id="calorieGraph"></canvas>
     </div>
   );

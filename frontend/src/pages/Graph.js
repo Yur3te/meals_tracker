@@ -7,11 +7,9 @@ function Info() {
   const endDate = "2024-05-30";
 
   return (
-    <div>
-      <div className="graph">
+      <div className="flex justify-center">
         <CalorieGraph startDate={startDate} endDate={endDate} />
       </div>
-    </div>
   );
 }
 

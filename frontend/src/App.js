@@ -13,7 +13,8 @@ import "./style/App.css";
 function App() {
 
   return (
-    <div className="container">
+    
+    <div className=" text-white m-0 p-0">
       <Router>
         <Navbar />
         <Routes>

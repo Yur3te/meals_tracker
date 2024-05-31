@@ -1,73 +1,9 @@
-input[type="text"] {
-  width: 500px;
-  background: #d9d9d9;
-  border-radius: 100px;
-  border: 1px solid;
-  padding: 0.5em 1em;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: #9c9c9c;
-  outline: none; /* może jakieś fajne wymyślę potem */
-}
 
-/* idk, ctl c ctrl v */
+/* idk, ctl c ctrl v, znikanie strzałek na number inputs*/
+
+/* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-
-input[type="number"] {
-  width: 120px;
-  background: #d9d9d9;
-  border-radius: 100px;
-  border: 1px solid;
-  padding: 0.5em 1em;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: #9c9c9c;
-  outline: none; /* może jakieś fajne wymyślę potem */
-  text-align: center;
-}
-
-input[type="date"] {
-  background: #d9d9d9;
-  border-radius: 100px;
-  border: 1px solid;
-  padding: 0.5em 1em;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: #000000;
-  outline: none; /* może jakieś fajne wymyślę potem */
-  text-align: center;
-}
-
-button {
-  padding: 10px;
-  background: #1eff00;
-  border-radius: 100px;
-  border: none;
-  padding: 0.5em 0.5em;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: #ffffff;
-  outline: none; /* może jakieś fajne wymyślę potem */
-  text-align: center;
-}
-
-input {
-    margin: 10px;
-}
-
-form {
-  display: flex;
-  align-items: center;
 }

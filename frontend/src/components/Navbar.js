@@ -6,8 +6,6 @@ import { SidebarData } from "./SidebarData";
 
 import { IconContext } from "react-icons";
 
-import "./../style/Navbar.css";
-
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
   const navbarRef = useRef(null);
@@ -30,30 +28,34 @@ function Navbar() {
   return (
     <div>
       <IconContext.Provider value={{ color: "white" }}>
-        <div className="navbar">
-          {/* <Link to="/" className="navbar-title" onClick={hideSidebar}> */}
-          <h1 className="navbar-title">MealsTracker</h1>
-          {/* </Link> */}
-          <Link to="#" className="menu-bars">
+        <div className="h-20 flex items-center bg-navy-800">
+            <h1 className="m-0 grow ml-20 text-4xl font-medium text-center">
+              <Link to="/" onClick={() => setSidebar(false)}>
+                MealsTracker
+              </Link>
+            </h1>
+          <Link to="#" className="text-4xl mr-8 bg-transparent">
             <FaBars onClick={showSidebar} />
           </Link>
         </div>
         <nav
           ref={navbarRef}
-          className={sidebar ? "nav-menu active" : "nav-menu"}
+          className={`bg-navy-900 h-full flex justify-center fixed top-0 right-0 z-10 transition-transform transform ${sidebar? "duration-500 translate-x-0" : " duration-200 translate-x-full"}`}
         >
-          <ul className="nav-menu-items">
-            <li className="navbar-toggle">
-              <Link to="#" classname="menu-bars">
+          <ul className="w-full">
+            <li className="bg-transparent p-4 flex justify-end items-center text-3xl">
+              <Link to="#">
                 <IoMdClose onClick={showSidebar} />
               </Link>
             </li>
             {SidebarData.map((item, index) => {
               return (
-                <li key={index} className={item.cName}>
+                <li key={index} className={"text-xl felx justify-start items-center p-1"}>
                   <Link onClick={showSidebar} to={item.path}>
+                    <div className="flex items-center px-6 py-2 rounded hover:bg-blue-600">
                     {item.icon}
-                    <span>{item.title}</span>
+                    <span className="ml-4">{item.title}</span>
+                    </div>
                   </Link>
                 </li>
               );
