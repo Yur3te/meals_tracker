@@ -60,10 +60,12 @@ app.get("/meals", (req, res) => {
 
   app.put('/meals/:id', (req, res) => {
     const { id } = req.params;
-    const { meal_name, calories, proteins } = req.body;
+    const { meal_name, calories, proteins, grams } = req.body;
+    // console.log(id, meal_name, calories, proteins);
+    // console.log(req.body);
 
-    const sql = 'UPDATE meals SET meal_name = ?, calories = ?, proteins = ? WHERE meal_id = ?';
-    db.query(sql, [meal_name, calories, proteins, id], (err, result) => {
+    const sql = 'UPDATE meals SET meal_name = ?, calories = ?, proteins = ?, grams = ? WHERE meal_id = ?';
+    db.query(sql, [meal_name, calories, proteins, grams, id], (err, result) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to update meal');
@@ -132,9 +134,9 @@ app.get("/meals", (req, res) => {
   
 
   app.post('/eaten', (req, res) => {
-    const { meal_name, calories, meal_date, proteins } = req.body;
-    const insertSql = 'INSERT INTO meals (meal_name, calories, meal_date, proteins) VALUES (?, ?, ?, ?)';
-    db.query(insertSql, [meal_name, calories, meal_date, proteins], (err, result) => {
+    const { meal_name, calories, meal_date, proteins, grams} = req.body;
+    const insertSql = 'INSERT INTO meals (meal_name, calories, meal_date, proteins, grams) VALUES (?, ?, ?, ?, ?)';
+    db.query(insertSql, [meal_name, calories, meal_date, proteins, grams], (err, result) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to add meal');
