@@ -6,6 +6,9 @@ import { SidebarData } from "./SidebarData";
 
 import { IconContext } from "react-icons";
 
+import { useNavigate } from 'react-router-dom';
+
+
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
   const navbarRef = useRef(null);
@@ -17,6 +20,15 @@ function Navbar() {
       setSidebar(false);
     }
   };
+  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setSidebar(false);
+    navigate('/login'); 
+  };
+
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -60,6 +72,7 @@ function Navbar() {
                 </li>
               );
             })}
+            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-red-600 rounded-full px-2" onClick={handleLogout}>Log Out</button>
           </ul>
         </nav>
       </IconContext.Provider>

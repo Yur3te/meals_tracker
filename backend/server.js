@@ -2,6 +2,11 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors')
 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const secret = "TakWiemLepiejByByloEnvAleMiSieNieChceLolITakMamLokalnie"; 
+
 const app = express()
 app.use(cors())
 
@@ -18,23 +23,70 @@ app.get('/', (req, res) => {
     return res.json("From Backed Side")
 })
 
-// app.get("/meals", (req, res) => {
-//     const sql = "SELECT * FROM meals";
-//     db.query(sql, (err, data) => {
-//         return res.json(data)
-//     })
-// })
+
+// Register endpoint
+app.post('/register', async (req, res) => {
+  const { email, username, password, height, weight, birth_date, activity_factor, goal } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const sql = 'INSERT INTO users (email, username, password, height, weight, birth_date, activity_factor, goal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [email, username, hashedPassword, height, weight, birth_date, activity_factor, goal], (err, result) => {
+    if (err) {
+      console.error('Error:', err);
+      res.status(500).send('Failed to register user');
+    } else {
+      res.status(200).send('User registered successfully');
+    }
+  });
+});
+
+// Login endpoint
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const sql = 'SELECT * FROM users WHERE username = ?';
+  db.query(sql, [username], async (err, results) => {
+    if (err || results.length === 0) {
+      res.status(401).send('Invalid username or password');
+    } else {
+      const user = results[0];
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        const token = jwt.sign({ userId: user.id }, secret, { expiresIn: '1h' });
+        res.status(200).send({ token });
+      } else {
+        res.status(401).send('Invalid username or password');
+      }
+    }
+  });
+});
+
+// Middleware to authenticate token
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (token) {
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.userId = decoded.userId;
+      next();
+    });
+  } else {
+    console.log("Mordini, coś poszło nie tak")
+    res.sendStatus(401);
+  }
+};
 
 
-app.get("/meals", (req, res) => {
+
+app.get("/meals", authenticateToken, (req, res) => {
     // Get the date query parameter from the request URL
     const { meal_date } = req.query;
     // Construct the SQL query to select meals for the specified date
 
-    const sql = "SELECT * FROM meals WHERE DATE(meal_date) = ?";
+    const sql = "SELECT * FROM meals WHERE DATE(meal_date) = ? AND user_id = ?";
 
     // Execute the SQL query with the specified date parameter
-    db.query(sql, [meal_date], (err, data) => {
+    db.query(sql, [meal_date, req.userId], (err, data) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to retrieve meals');
@@ -57,6 +109,7 @@ app.get("/meals", (req, res) => {
       }
     });
   });
+  //bez authenticate tak trochę bardzo nie secure, ale mi się nie chcę dodawać, to potem XDD
 
   app.put('/meals/:id', (req, res) => {
     const { id } = req.params;
@@ -87,7 +140,7 @@ app.get("/meals", (req, res) => {
   
   
 
-  app.get("/total", (req, res) => {
+  app.get("/total", authenticateToken, (req, res) => {
     // Get the date query parameter from the request URL
     const { meal_date } = req.query;
   
@@ -95,12 +148,12 @@ app.get("/meals", (req, res) => {
     const sql = `
       SELECT SUM(calories) AS total_calories, SUM(proteins) AS total_proteins
       FROM meals
-      WHERE DATE(meal_date) = ?
+      WHERE DATE(meal_date) = ? AND user_id = ?
     `;
 
     
     // Execute the SQL query with the specified date parameter
-    db.query(sql, [meal_date], (err, data) => {
+    db.query(sql, [meal_date, req.userId], (err, data) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to retrieve meals');
@@ -110,17 +163,17 @@ app.get("/meals", (req, res) => {
     });
   });
 
-  app.get("/total-calories-by-period", (req, res) => {
+  app.get("/total-calories-by-period", authenticateToken, (req, res) => {
     const { startDate, endDate } = req.query;
   
     const sql = `
       SELECT DATE(meal_date) AS day, SUM(calories) AS total_calories
       FROM meals
-      WHERE DATE(meal_date) BETWEEN ? AND ?
+      WHERE DATE(meal_date) BETWEEN ? AND ? And user_id = ?
       GROUP BY DATE(meal_date);
     `;
   
-    db.query(sql, [startDate, endDate], (err, result) => {
+    db.query(sql, [startDate, endDate, req.userId], (err, result) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to retrieve total calories by period');
@@ -133,10 +186,10 @@ app.get("/meals", (req, res) => {
   
   
 
-  app.post('/eaten', (req, res) => {
+  app.post('/eaten', authenticateToken, (req, res) => {
     const { meal_name, calories, meal_date, proteins, grams} = req.body;
-    const insertSql = 'INSERT INTO meals (meal_name, calories, meal_date, proteins, grams) VALUES (?, ?, ?, ?, ?)';
-    db.query(insertSql, [meal_name, calories, meal_date, proteins, grams], (err, result) => {
+    const insertSql = 'INSERT INTO meals (meal_name, calories, meal_date, proteins, grams, user_id) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(insertSql, [meal_name, calories, meal_date, proteins, grams, req.userId], (err, result) => {
       if (err) {
         console.error('Error:', err);
         res.status(500).send('Failed to add meal');
@@ -157,6 +210,21 @@ app.get("/meals", (req, res) => {
       }
     });
   });
+
+  app.get('/users', authenticateToken, (req, res) => {
+    const sql = 'SELECT * FROM users WHERE id = ?';
+    db.query(sql, [req.userId], (err, result) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        return res.status(500).json({ error: 'Failed to query database' });
+      }
+      if (result.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      return res.json(result[0]);
+    });
+  });
+  
   
   
 

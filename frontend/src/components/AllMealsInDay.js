@@ -15,6 +15,8 @@ function AllMealsInDay() {
   const [totalProteins, setTotalProteins] = useState([]);
   const [editingMeal, setEditingMeal] = useState(null);
 
+  const token = localStorage.getItem('token'); 
+
   const handleEditSubmit = (updatedMeal) => {
     fetch(`http://localhost:8081/meals/${updatedMeal.meal_id}`, {
       method: "PUT",
@@ -97,7 +99,11 @@ function AllMealsInDay() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:8081/meals?meal_date=${selectedDate}`)
+    fetch(`http://localhost:8081/meals?meal_date=${selectedDate}`, {
+        headers: {
+          'Authorization': token
+        }
+    })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -105,7 +111,11 @@ function AllMealsInDay() {
       })
       .catch((err) => console.log(err));
 
-    fetch(`http://localhost:8081/total?meal_date=${selectedDate}`)
+    fetch(`http://localhost:8081/total?meal_date=${selectedDate}`, {
+      headers: {
+        'Authorization': token
+      }
+    })
       .then((response) => response.json())
       .then((data) => {
         setTotalCalories(data[0].total_calories);
@@ -113,7 +123,7 @@ function AllMealsInDay() {
         console.log(data);
       })
       .catch((err) => console.log(err));
-  }, [selectedDate]);
+  }, [selectedDate, token]);
 
   return (
     <div>

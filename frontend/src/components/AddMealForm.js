@@ -15,12 +15,15 @@ function AddMealForm({ onAddMeal }) {
     new Date().toISOString().split("T")[0]
   ); // Default to today
 
+  const token = localStorage.getItem('token'); 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch("http://localhost:8081/eaten", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': token
       },
       body: JSON.stringify({ meal_name, calories, meal_date, proteins, grams }),
     })

@@ -7,9 +7,15 @@ function CalorieGraph({ startDate, endDate }) {
   const [calorieData, setCalorieData] = useState([]);
   const chartRef = useRef(null);
 
+  const token = localStorage.getItem('token'); 
+
   useEffect(() => {
     // Fetch total calories for the specified period
-    fetch(`http://localhost:8081/total-calories-by-period?startDate=${startDate}&endDate=${endDate}`)
+    fetch(`http://localhost:8081/total-calories-by-period?startDate=${startDate}&endDate=${endDate}`, {
+      headers: {
+        'Authorization': token
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch total calories by period');
@@ -21,7 +27,7 @@ function CalorieGraph({ startDate, endDate }) {
         console.log(data)
       })
       .catch(error => console.error('Error:', error));
-  }, [startDate, endDate]);
+  }, [startDate, endDate, token]);
 
   useEffect(() => {
     if (chartRef.current) {
